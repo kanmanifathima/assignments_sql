@@ -690,6 +690,47 @@ select * from (select Salary, row_number() over (order by salary desc) as row_nu
 
 -- 15. Find Second Highest Salary from Employee table using "Row_number() function" and pass blank inside “over()”
 select * from (select Salary, row_number() over() as sec_sal from Employee order by Salary desc)r where r.sec_sal= 2;
+select * from Employee;
 
+-- Practice Query 2
+-- 1. Find the highest salary of each department
+select Departement, max(salary) from Employee group by Departement;
+
+-- 2. Find the highest salary of each year on joining_date
+select joining_date, max(salary) from Employee group by year(Joining_date);
+
+-- 3. Find the highest salary of each quarter on joining_date
+select joining_date, max(salary) from Employee group by quarter(Joining_date);
+
+-- 4. Find the highest salary of each week of the year on joining_date
+select week(Joining_date), max(Salary) from Employee group by week(Joining_date);
+
+-- 5. Find the highest salary on the even days of joining_date
+select Joining_date, max(Salary) from Employee 
+where Joining_date in(select Joining_date from Employee where Joining_date%2 = 0);
+-- on all even days
+select Joining_date, max(Salary) from Employee 
+where Joining_date in(select Joining_date from Employee where Joining_date%2 = 0) group by Joining_date;
+
+-- 6. Find the highest salary on the odd days of joining_date
+select Joining_date, max(Salary) from Employee 
+where Joining_date in(select Joining_date from Employee where Joining_date%2 <> 0);
+-- on all odd days
+select Joining_date, max(Salary) from Employee 
+where Joining_date in(select Joining_date from Employee where Joining_date%2 <> 0)group by Joining_date;
+
+-- 7. Find the highest salary of even months on joining_date
+select Joining_date,month(Joining_date), max(Salary) from Employee
+where month(Joining_date) in (select month(Joining_date) from Employee where month(Joining_date)%2 = 0);
+
+-- 8. Find the highest salary of odd weeks of the year on joining_date
+select Joining_date,week(Joining_date), max(Salary) from Employee
+where week(Joining_date) in (select week(Joining_date) from Employee where week(Joining_date)%2 <> 0);
+
+-- 9. Find week of the month for each joining_date
+
+SELECT employee_id, Joining_date, weekday(Joining_date) as weekday_count,
+FLOOR((DAYOFMONTH(Joining_date)-1 + WEEKDAY(concat(YEAR(Joining_date),'-',MONTH(Joining_date),'-01')))/7) + 1 as week_of_month
+FROM Employee;
 
 
